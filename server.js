@@ -1,8 +1,8 @@
-
-const albumsData = require('./AlbumData')
+const logger = require('./middleware/logger')
 
 const express = require("express")
 const bodyParser = require("body-parser")
+
 
 
 //initialize express
@@ -13,25 +13,19 @@ app.use(bodyParser.json())
 app.listen(3001, () => console.log("this is running on  port 3001"))
 
 
+//Router
+app.use('/albums', require('./routes/albums'))
+
+//initialize middleware
+app.use(logger)
+
 // creating endpoints
 app.get("/", (req, res) => {
     res.send("Hello world")
 })
 
 
-app.get("/albums", (req, res) => {
-    res.send(albumsData)
-})
 
-app.get("/albums/:albumsId", (req, res) => {
-    const found = albumsData.some(album => album.albumId === req.params.albumsId)
-    if (found) {
-        res.send(albumsData.find(album => album.albumId === req.params.albumsId))
-    } else {
-        res.status(400).json({ msg: `No album with the ID of ${req.params.albumsId}` })
-    }
-
-})
 
 app.post("/albums", (req, res) => {
 
