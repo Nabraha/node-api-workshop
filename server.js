@@ -28,8 +28,6 @@ app.get("/", (req, res) => {
 
 
 app.post("/albums", (req, res) => {
-
-    console.log(req.body)
     const newAlbum = req.body;
     albumsData.push(newAlbum)
     res.send("this is the post")
