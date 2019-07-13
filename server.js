@@ -3,6 +3,8 @@ const logger = require('./middleware/logger')
 const express = require("express")
 const bodyParser = require("body-parser")
 const albumsData = require('./AlbumData')
+const cors = require('cors')
+app.use(cors())
 
 
 
