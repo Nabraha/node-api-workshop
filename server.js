@@ -11,7 +11,7 @@ const app = express();
 app.use(bodyParser.json())
 
 //Listening on port 3001
-app.listen(3001, () => console.log("this is running on  port 3001"))
+
 
 
 //Router
@@ -35,26 +35,24 @@ app.post("/albums", (req, res) => {
 
 //update album
 app.put("/albums/:albumsId", (req, res) => {
-    // const found = albumsData.some(album => album.albumId === req.params.albumsId)
-    // if (found) {
-    const updateAlbum = req.body;
-    const album = albumsData.find(album => album.albumId === req.params.albumsId)
+    const found = albumsData.some(album => album.albumId === req.params.albumsId)
+    if (found) {
+        const updateAlbum = req.body;
+        albumsData.forEach(album => {
+            if (album.albumId === req.params.albumsId) {
+                album.artistName = updateAlbum.artistName ? updateAlbum.artistName : album.artistName;
+                album.collectionName = updateAlbum.collectionName ? updateAlbum.collectionName : album.collectionName;
+                album.artworkUrl100 = updateAlbum.artworkUrl100 ? updateAlbum.artworkUrl100 : album.artworkUrl100;
+                album.releaseDate = updateAlbum.releaseDate ? updateAlbum.releaseDate : album.releaseDate;
+                album.primaryGenreName = updateAlbum.primaryGenreName ? updateAlbum.primaryGenreName : album.primaryGenreName;
+                album.url = updateAlbum.url ? updateAlbum.url : album.url;
+            }
+            res.send({ msg: 'Album updated', album })
+        })
 
-    // albumsData.forEach(album => {
-    // if (album.albumId === req.params.albumsId) {
-    album.artistName = updateAlbum.artistName ? updateAlbum.artistName : album.artistName;
-    album.collectionName = updateAlbum.collectionName ? updateAlbum.collectionName : album.collectionName;
-    album.artworkUrl100 = updateAlbum.artworkUrl100 ? updateAlbum.artworkUrl100 : album.artworkUrl100;
-    album.releaseDate = updateAlbum.releaseDate ? updateAlbum.releaseDate : album.releaseDate;
-    album.primaryGenreName = updateAlbum.primaryGenreName ? updateAlbum.primaryGenreName : album.primaryGenreName;
-    album.url = updateAlbum.url ? updateAlbum.url : album.url;
-    // }
-    res.send({ msg: 'Album updated', album })
-    //     })
-
-    // } else {
-    //     res.status(400).json({ msg: `No album with the ID of ${req.params.albumsId}` })
-    // }
+    } else {
+        res.status(400).json({ msg: `No album with the ID of ${req.params.albumsId}` })
+    }
 
 })
 
@@ -82,7 +80,9 @@ app.get("/albums", (req, res) => {
         console.log(req.query)
     } else {
         let filterList = albumsData.filter(album => album.primaryGenreName === req.query.genre)
-        console.log("hello")
+        console.log()
         res.send(filterList)
     }
 })
+
+app.listen(process.env.PORT || 3001, () => console.log("this is running on  port 3001"))
