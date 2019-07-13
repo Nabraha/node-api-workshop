@@ -4,14 +4,14 @@ const express = require("express")
 const bodyParser = require("body-parser")
 const albumsData = require('./AlbumData')
 const cors = require('cors')
-app.use(cors())
+
 
 
 
 //initialize express
 const app = express();
 app.use(bodyParser.json())
-
+app.use(cors())
 //Listening on port 3001
 
 
